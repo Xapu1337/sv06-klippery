@@ -1,4 +1,4 @@
-# Xapu's SV
+# Xapu's Sv06 Klipper
 
 
 ### I have been running a Sovol Sv06 klipperized for roughly a year, this repo contains all the configs
