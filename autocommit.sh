@@ -18,6 +18,9 @@ config_folder=~/printer_data/config
 # provided moonraker script 'data-path-fix.sh' to fix/update
 # older installs
 
+set -e  # Exit immediately if a command exits with a non-zero status
+
+
 ### Path to your Klipper folder, by default that is '~/klipper'
 klipper_folder=~/klipper
 
@@ -32,7 +35,7 @@ mainsail_folder=~/mainsail
 
 ### The branch of the repository that you want to save your config
 ### By default that is 'main'
-branch=main
+branch=master
 
 #####################################################################
 #####################################################################
@@ -73,11 +76,39 @@ grab_version(){
 
 push_config(){
   cd $config_folder
-  git pull origin $branch --no-rebase
-  git add .
-  current_date=$(date +"%Y-%m-%d %T")
-  git commit -m "Autocommit from $current_date" -m "$m1" -m "$m2" -m "$m3" -m "$m4"
-  git push origin $branch
+
+  # Check if the branch exists locally, create if not
+  if ! git show-ref --verify --quiet refs/heads/$branch; then
+    git checkout -b $branch
+  else
+    git checkout $branch
+  fi
+
+  # Check if the local branch is in sync with the remote branch
+  if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/$branch)" ]; then
+    # Check if there are any changes to commit
+    if git diff --quiet; then
+      # Rebase the local branch to match the remote branch
+      git pull origin $branch --rebase
+    else
+      # Commit local changes before pulling with rebase
+      git add .
+      current_date=$(date +"%Y-%m-%d %T")
+      git commit -m "Autocommit from $current_date" -m "$m1" -m "$m2" -m "$m3" -m "$m4"
+      git pull origin $branch --rebase
+    fi
+  fi
+
+  # Check if there are any changes to commit
+  if ! git diff --quiet; then
+    # Add, commit, and push changes
+    git add .
+    current_date=$(date +"%Y-%m-%d %T")
+    git commit -m "Autocommit from $current_date" -m "$m1" -m "$m2" -m "$m3" -m "$m4"
+    git push origin $branch
+  else
+    echo "No changes to commit."
+  fi
 }
 
 grab_version
