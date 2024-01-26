@@ -91,11 +91,10 @@ push_config(){
       # Rebase the local branch to match the remote branch
       git pull origin $branch --rebase
     else
-      # Commit local changes before pulling with rebase
-      git add .
-      current_date=$(date +"%Y-%m-%d %T")
-      git commit -m "Autocommit from $current_date" -m "$m1" -m "$m2" -m "$m3" -m "$m4"
+      # Stash remote changes, apply local changes, and reapply stashed changes
+      git stash save --include-untracked "Stash remote changes"
       git pull origin $branch --rebase
+      git stash pop
     fi
   fi
 
