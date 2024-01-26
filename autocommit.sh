@@ -84,15 +84,15 @@ push_config(){
     git checkout $branch
   fi
 
-  # Check if the local branch is in sync with the remote branch
+  # Check if the local branch is ahead of the remote branch
   if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/$branch)" ]; then
     # Check if there are any changes to commit
     if git diff --quiet; then
       # Rebase the local branch to match the remote branch
       git pull origin $branch --rebase
     else
-      # Stash remote changes, apply local changes, and reapply stashed changes
-      git stash save --include-untracked "Stash remote changes"
+      # Stash local changes, apply remote changes, and reapply stashed changes
+      git stash save --include-untracked "Stash local changes"
       git pull origin $branch --rebase
       git stash pop
     fi
@@ -100,11 +100,11 @@ push_config(){
 
   # Check if there are any changes to commit
   if ! git diff --quiet; then
-    # Add, commit, and push changes
+    # Add, commit, and force push changes to prioritize local changes
     git add .
     current_date=$(date +"%Y-%m-%d %T")
     git commit -m "Autocommit from $current_date" -m "$m1" -m "$m2" -m "$m3" -m "$m4"
-    git push origin $branch
+    git push origin $branch --force
   else
     echo "No changes to commit."
   fi
