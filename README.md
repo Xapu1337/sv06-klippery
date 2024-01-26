@@ -5,7 +5,7 @@
 ### and other stuff usable for me and other Sv06 users to push this machine to its limits while maintaining quality!
 
 # My Sv06 Modifications:
-## - All `LM8UU` bearings have been replaced with Igus Drylin bearings, making the sv06 very quiet!
+## - All `LM8UU` bearings have been replaced with Igus Drylin bearings, making the Sv06 very quiet!
 ## - (First Upgrade) RPI400 running Klipper & Mainsail
 ## - Top Z-Axis bearing mod, this replaced the stock Z leadscrew holders with one where 608 bearings stablize the leadscrew
 ## - Z-Axis couplers have been replaced with "flexible" (basically bendy couplers) couplers to account for Z leadscrew wobble.
