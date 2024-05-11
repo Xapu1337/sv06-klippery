@@ -40,8 +40,6 @@ channel: stable
 repo: mainsail-crew/mainsail
 path: ~/mainsail
 
-# moonraker.conf
-
 [update_manager timelapse]
 type: git_repo
 primary_branch: main
@@ -92,13 +90,3 @@ type: web
 channel: stable
 repo: fluidd-core/fluidd
 path: ~/fluidd
-# moonraker.conf
-
-
-# Crowsnest update_manager entry
-[update_manager crowsnest]
-type: git_repo
-path: ~/crowsnest
-origin: https://github.com/mainsail-crew/crowsnest.git
-managed_services: crowsnest
-install_script: tools/pkglist.sh
